@@ -1,0 +1,24 @@
+#summary One-sentence summary of this page.
+
+= Wstęp =
+
+Projekt na Technikę Mikroprocesorową 2 semestr 5 Informatyka AGH/
+
+
+= Szczegóły =
+
+Projekt będzie składał się z dwóch aplikacji:
+  * klienta
+  * serwera
+
+Aplikacja kliencka znajdować się będzie na telefonie wyposażonym w system Android, dlatego też Językiem użytym do implementacji będzie Java wraz z narzędziem Android SDK.
+
+Aplikacja serwera (znajdująca się na komputerze PC wyposażonym w kamerkę) napisana zostanie w języku Python. Użyte zostaną biblioteki:
+{{{
+bluez
+}}}
+Do obsługi modułu bluetooth, oraz
+{{{
+pyopencv
+}}}
+Do obsługi kamerki.
