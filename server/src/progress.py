@@ -9,6 +9,7 @@ class ProgressThread(threading.Thread):
         self.base = devs
         
     def run(self):
+        # TODO clearing lists of devices
         print 'starting searching thread'
         self.base.statusbar.push(0, 'Searching ...')
         devices = bluetooth.discover_devices()

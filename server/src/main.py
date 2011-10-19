@@ -6,7 +6,18 @@ from progress import ProgressThread
 
 # CLASSES
         
-class Base:    
+class Base: 
+    def device_selected(self, widget, data=None):   
+        self.button2.set_sensitive(True)    
+            
+        sel = self.treeview.get_selection()
+        sel.set_mode(gtk.SELECTION_SINGLE)
+        tm, ti = sel.get_selected()
+        
+        if ti is not None:
+            self.statusbar.push(0, 'Selected device ' + str(tm.get_value(ti, 0)) + ' with MAC: ' + str(tm.get_value(ti, 0)))  
+        return True   
+           
     def search_devices(self, widget, data=None):
         self.button1.set_sensitive(False)        
         progress_thread = ProgressThread(self)
@@ -30,6 +41,9 @@ class Base:
         self.button1 = gtk.Button("Search Devices")
         self.button1.connect("clicked", self.search_devices)
         
+        self.button2 = gtk.Button("Connect")
+        self.button2.set_sensitive(False)
+        
         # LISTVIEW
         
         self.liststore = gtk.ListStore( str, str )
@@ -49,6 +63,9 @@ class Base:
         self.tvcolumn.set_attributes(cell, text=0)
         self.tvcolumn2.set_attributes(cell, text=1)
         
+        self.treeselection = self.treeview.get_selection()
+        self.treeselection.set_select_function(self.device_selected, ())
+        
         # STATUSBAR
         
         self.statusbar = gtk.Statusbar()
@@ -57,14 +74,17 @@ class Base:
         # LAYOUTS
         
         self.box1 = gtk.VBox(False, 0)
+        self.box2 = gtk.HBox(False, 0)
         self.window.add(self.box1)
 
         self.vscrollbar = gtk.ScrolledWindow()
         self.vscrollbar.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         self.vscrollbar.add(self.treeview)
 
+        self.box2.pack_start(self.button1, False, True, 0)
+        self.box2.pack_start(self.button2, False, True, 0)
         self.box1.pack_start(self.vscrollbar, True, True, 0)
-        self.box1.pack_start(self.button1, False, True, 0)
+        self.box1.pack_start(self.box2, False, True, 0)
         self.box1.pack_start(self.statusbar, False, True, 0)
         
         self.window.show_all()
