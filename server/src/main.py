@@ -1,13 +1,30 @@
+from btconnection import BluetoothConnection
+from progress import ProgressThread
+from webcam import WebCam
+import cv
+import gtk
+gtk.threads_init()
+import os
 import pygtk
 pygtk.require('2.0')
-import gtk
 
-from progress import ProgressThread
 
 # CLASSES
         
 class Base: 
-    def device_selected(self, widget, data=None):   
+    def start_streaming(self, widget, data=None):
+        print 'started streaming'
+        self.button3.set_sensitive(False)
+        self.button4.set_sensitive(True)
+        self.statusbar.push(0, 'Streaming . . .')
+        
+    def stop_streaming(self, widget, data=None):
+        print 'stopped streaming'
+        self.button3.set_sensitive(True)
+        self.button4.set_sensitive(False)
+        self.statusbar.push(0, 'Stopped streaming')
+        
+    def device_selected(self, selection):   
         self.button2.set_sensitive(True)    
             
         sel = self.treeview.get_selection()
@@ -15,8 +32,27 @@ class Base:
         tm, ti = sel.get_selected()
         
         if ti is not None:
-            self.statusbar.push(0, 'Selected device ' + str(tm.get_value(ti, 0)) + ' with MAC: ' + str(tm.get_value(ti, 0)))  
+            self.dev_address = str(tm.get_value(ti, 1))
+            self.statusbar.push(0, 'Selected device ' + str(tm.get_value(ti, 0)) + ' with MAC: ' + self.dev_address)
+        else:
+            print 'iter is none'  
         return True   
+    
+    def device_connect(self, widget, data=None):
+        print 'connecting'
+
+        btconnect = BluetoothConnection(self.dev_address)
+        self.is_connected = btconnect.establish_connection()
+        if self.is_connected is True:
+            self.statusbar.push(0, 'Connected')
+            
+            self.t = WebCam()
+            self.t.start()
+            
+            self.button3.set_sensitive(True)
+            
+        else:
+            self.statusbar.push(0, "Can't establish connection")
            
     def search_devices(self, widget, data=None):
         self.button1.set_sensitive(False)        
@@ -25,13 +61,14 @@ class Base:
     
     def __init__(self):
         # VARIABLE INITS
-        
+
         # GTK WINDOW INITS
         
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.set_title("Nunczaki Orientu")
         self.window.set_border_width(10)
         self.window.set_size_request(450, 400)
+        self.window.set_position(gtk.POS_RIGHT)
         
         self.window.connect("delete_event", self.delete_event)
         self.window.connect("destroy", self.destroy)
@@ -42,7 +79,16 @@ class Base:
         self.button1.connect("clicked", self.search_devices)
         
         self.button2 = gtk.Button("Connect")
+        self.button2.connect("clicked", self.device_connect)
         self.button2.set_sensitive(False)
+        
+        self.button3 = gtk.Button("Start streaming")
+        self.button3.set_sensitive(False)
+        self.button3.connect("clicked", self.start_streaming)
+        
+        self.button4 = gtk.Button("Stop streaming")
+        self.button4.set_sensitive(False)
+        self.button4.connect("clicked", self.stop_streaming)
         
         # LISTVIEW
         
@@ -62,9 +108,8 @@ class Base:
         
         self.tvcolumn.set_attributes(cell, text=0)
         self.tvcolumn2.set_attributes(cell, text=1)
-        
-        self.treeselection = self.treeview.get_selection()
-        self.treeselection.set_select_function(self.device_selected, ())
+    
+        self.treeview.get_selection().connect("changed", self.device_selected)
         
         # STATUSBAR
         
@@ -83,6 +128,9 @@ class Base:
 
         self.box2.pack_start(self.button1, False, True, 0)
         self.box2.pack_start(self.button2, False, True, 0)
+        self.box2.pack_start(self.button3, False, True, 0)
+        self.box2.pack_start(self.button4, False, True, 0)
+        
         self.box1.pack_start(self.vscrollbar, True, True, 0)
         self.box1.pack_start(self.box2, False, True, 0)
         self.box1.pack_start(self.statusbar, False, True, 0)
@@ -107,26 +155,3 @@ class Base:
 if __name__ == '__main__':
     base = Base()
     base.main()
-  
-## setting up connection
-#server_sock = bluetooth.BluetoothSocket( bluetooth.RFCOMM)
-#port = 8080
-#
-#server_sock.bind( ("", port) )
-#server_sock.listen(1)
-#
-#client_sock, address = server_sock.accept()
-#
-#print "Accepted connection from ", address
-
-#    capture = cv.CaptureFromCAM(0)
-#
-#    count = 0
-#
-#    while count < 25:
-#        image = cv.QueryFrame(capture)
-#    
-#        cv.ShowImage('Test WebCam in Python', image)
-#        cv.SaveImage('test_image.jpg', image)
-#        cv.WaitKey(2)
-#        count += 1
