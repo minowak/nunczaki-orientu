@@ -18,10 +18,14 @@ class AppBase:
         
     def stop_callback(self, widget, data=None):
         print "Stop"
-    
+        
+    def connect_callback(self, widget, data=None):
+        print "Connecting: " + self.serverTextBox.get_text()
+        
     def initGUI(self):
         # Boxes
         self.HBox = gtk.HBox(False, 10)
+        self.serverHBox = gtk.HBox(False, 5)
         self.VBox = gtk.VBox(False, 5)
         
         # Images
@@ -42,6 +46,11 @@ class AppBase:
         self.stopBtn.add(stopImg)
         self.stopBtn.set_size_request(40, 40)
         
+        self.connectBtn = gtk.Button("Connect")
+        
+        # Text Box
+        self.serverTextBox = gtk.Entry()
+        
         # Scale
         self.scale = gtk.HScale()
         self.scale.set_digits(2)
@@ -52,6 +61,7 @@ class AppBase:
         # Connects
         self.playBtn.connect_object("clicked", self.play_callback, None)
         self.stopBtn.connect_object("clicked", self.stop_callback, None)
+        self.connectBtn.connect_object("clicked", self.connect_callback, None)
         
         # Packing
         self.HBox.pack_start(self.playBtn, False, False, 0)
@@ -59,8 +69,12 @@ class AppBase:
         self.HBox.add(self.scale)
         self.HBox.show_all()
         
+        self.serverHBox.pack_start(self.connectBtn, False, False, 0)
+        self.serverHBox.add(self.serverTextBox)
+        
         self.VBox.pack_start(self.HBox, False, False, 5)
-        self.VBox.show();
+        self.VBox.pack_start(self.serverHBox, False, False, 5)
+        self.VBox.show_all();
         
     def __init__(self):
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
