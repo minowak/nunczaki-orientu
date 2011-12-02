@@ -4,9 +4,29 @@ Created on 02-12-2011
 @author: News
 '''
 
+import thread
+import gtk
+import pygame
 import pygtk
 pygtk.require('2.0')
-import gtk
+
+
+def play_music(music_file):
+    """
+    stream music with mixer.music module in blocking manner
+    this will stream the sound from disk while playing
+    """
+    clock = pygame.time.Clock()
+    try:
+        pygame.mixer.music.load(music_file)
+        print "Music file %s loaded!" % music_file
+    except pygame.error:
+        print "File %s not found! (%s)" % (music_file, pygame.get_error())
+        return
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        # check if playback has finished
+        clock.tick(30)
 
 class AppBase:
     # Callbacks
@@ -15,9 +35,21 @@ class AppBase:
         
     def play_callback(self, widget, data=None): 
         print "Play"
+        # set up the mixer
+        freq = 44100     # audio CD quality
+        bitsize = -16    # unsigned 16 bit
+        channels = 2     # 1 is mono, 2 is stereo
+        buffer = 2048    # number of samples (experiment to get right sound)
+        pygame.mixer.init(freq, bitsize, channels, buffer)
+
+            # optional volume 0 to 1.0
+        pygame.mixer.music.set_volume(0.75)
+        # TODO W¹tki w GTk
+        thread.start_new_thread(play_music, ("Kalimba.mp3", ))
+        
         
     def stop_callback(self, widget, data=None):
-        print "Stop"
+        print "Stop2"
         
     def connect_callback(self, widget, data=None):
         print "Connecting: " + self.serverTextBox.get_text()
