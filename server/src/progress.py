@@ -37,6 +37,6 @@ class ProgressThread(threading.Thread):
         except:
             print 'not found bluetooth adapter'
             self.base.statusbar.push(0, 'No Bluetooth adapter connected')
-            self.base.button1.set_sensitive(True)
         finally:
-            gtk.threads_leave()
+            self.base.button1.set_sensitive(True)
+	    gtk.threads_leave()
