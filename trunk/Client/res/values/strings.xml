@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    
+    <string name="app_name">Client</string>
+    <string name="hello">Client Activity</string>
+    <string name="scanButtonText">Scan</string>
+    <string name="select_device">Select Device</string>
+
+</resources>
