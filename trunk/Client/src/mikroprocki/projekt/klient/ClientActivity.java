@@ -68,6 +68,9 @@ public class ClientActivity extends Activity {
     	}
 		Intent selectDeviceIntent = new Intent(this, DevicesListActivity.class);
         startActivityForResult(selectDeviceIntent, REQUEST_SELECT_DEVICE);
+        
+      
+        
 		//TODO dalsze dzia³anie programu
     	
     }
@@ -110,11 +113,12 @@ public class ClientActivity extends Activity {
             		if (n!=null)
             			Toast.makeText(getApplicationContext(), "blad", Toast.LENGTH_LONG).show();
             		if (y!=null)
-            			Toast.makeText(getApplicationContext(), "polaczono" + y, Toast.LENGTH_LONG).show();
+            			Toast.makeText(getApplicationContext(), "polaczono " + y, Toast.LENGTH_LONG).show();
             	break;
             	
             	case MESSAGE_IMG:
             		imageView.setImageDrawable((Drawable)msg.obj);
+            		//imageView.setImageBitmap((Bitmap)msg.obj);
             	break;
             	
             	case MESSAGE_TEST:
