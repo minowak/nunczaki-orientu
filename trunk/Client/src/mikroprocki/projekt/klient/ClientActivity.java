@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -49,8 +51,14 @@ public class ClientActivity extends Activity {
     public void onPause() {
     	super.onPause();
     }
-    public void onStop() {
+    public void onStop() {    	
+    	bluetoothService.finish();    	
     	super.onStop();
+    }
+    
+    public void onDestroy() {
+    	bluetoothService.finish();    	
+    	super.onDestroy();
     }
     
     public void oonResume() {
@@ -128,5 +136,21 @@ public class ClientActivity extends Activity {
             }
         }
     };
+    
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+    
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	if (keyCode == KeyEvent.KEYCODE_BACK) {
+            this.finish();
+        }
+    	if (keyCode == KeyEvent.KEYCODE_HOME) {
+            this.finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
     
 }
