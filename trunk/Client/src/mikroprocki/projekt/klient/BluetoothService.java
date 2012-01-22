@@ -159,45 +159,12 @@ public class BluetoothService {
 		}
 		
 		public void run() {
-//			int current = 0;
-//			
-//			while (true) {
-//				List<Byte> buffer = new ArrayList<Byte>();
-//				try {
-//					while ( (current = bufferedInputStream.available()) > 0  ) {
-//						byte[] tmp = new byte[current];
-//						bufferedInputStream.read(tmp, 0, current);
-//						for(Byte b : tmp)
-//							buffer.add(b);
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				if (current==0) {
-//					byte[] tmp = new byte[buffer.size()];
-//					for (int i=0; i<buffer.size(); i++)
-//						tmp[i] = buffer.get(i);
-//				
-//					int size = tmp.length;
-//					
-//					Message msg = handler.obtainMessage(ClientActivity.MESSAGE_TEST);
-//					Bundle bundle = new Bundle();
-//					bundle.putString("buffer", new Integer(size).toString() );
-//					msg.setData(bundle);
-//					handler.sendMessage(msg);
-//				
-//				
-//					Bitmap bitmap = BitmapFactory.decodeByteArray(tmp, 0, current);
-//					Drawable img = new BitmapDrawable(bitmap);
-//					handler.obtainMessage(ClientActivity.MESSAGE_IMG, img).sendToTarget();
-//				}
-//			}
 			
 			int a = 90000;
 			
-			while (cont) { 
+			while (true) { 
 				try {
-					Thread.sleep(1231);
+					Thread.sleep(500);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -205,152 +172,24 @@ public class BluetoothService {
 				byte[] tmp = new byte[a];
 				int pobrane = 0;
 				try {
-				//	while ( (pobrane = bufferedInputStream.read(tmp, 0, a)) > 1) {
-						pobrane = bufferedInputStream.read(tmp, 0, a);
-					//	Message msg = handler.obtainMessage(ClientActivity.MESSAGE_TEST);
-					//	Bundle bundle = new Bundle();
-					//	bundle.putString("buffer", new Integer(pobrane).toString() );
-					//	msg.setData(bundle);
-				//		handler.sendMessage(msg);
-//						for(int i=0; i<pobrane; i++)
-//							buf.add(tmp[i]);
-//					
-//					byte[] gotowe = new byte[buf.size()];
-//					int size = buf.size();
-//					for (int i=0; i<size; i++)
-//						gotowe[i] = buf.get(i);
-					
-//					Message msg = handler.obtainMessage(ClientActivity.MESSAGE_TEST);
-//					Bundle bundle = new Bundle();
-//					bundle.putString("buffer", new Integer(size).toString() );
-//					msg.setData(bundle);
-//					handler.sendMessage(msg);
-					
-					
-					Bitmap bitmap = BitmapFactory.decodeByteArray(tmp, 0, pobrane);
-					Drawable img = new BitmapDrawable(bitmap);
-					handler.obtainMessage(ClientActivity.MESSAGE_IMG, img).sendToTarget();
+						pobrane = bufferedInputStream.read(tmp, 0, a);					
+						Bitmap bitmap = BitmapFactory.decodeByteArray(tmp, 0, pobrane);
+						Drawable img = new BitmapDrawable(bitmap);
+						handler.obtainMessage(ClientActivity.MESSAGE_IMG, img).sendToTarget();
 					
 				} catch (IOException e) {
-					e.printStackTrace();
+					handler.obtainMessage(ClientActivity.MESSAGE_ERROR);
+					e.printStackTrace();					
 				}
 				
 				try {
-				//	outputStream.write(1);
+					outputStream.write(1);
 					outputStream.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 			
-			
-//			int last = 0;
-//			int current = 0;
-//
-//			// Keep listening to the InputStream while connected
-//			while (true) {
-//				last = 0;
-//				current = 0;
-//				try {
-//					while ((last < (current = bufferedInputStream.available()))
-//							&& (current != 0) ) {
-//						last = current;
-//
-//						try {
-//							Thread.sleep(100);
-//						} catch (InterruptedException e) {
-//						}
-//					}
-//
-//					if (current != 0) {
-//						byte[] buffer = new byte[current];
-//						
-//						bufferedInputStream.read(buffer, 0, current);
-//
-////						try {
-////							bufferedInputStream.write((new Integer(current))
-////									.toString().getBytes(), 0, (new Integer(
-////									current)).toString().getBytes().length);
-////							bufferedInputStream.flush();
-////						} catch (IOException e1) {
-////						}
-//
-//						Bitmap bitmap = BitmapFactory.decodeByteArray(buffer,
-//								0, current);
-//						Drawable img = new BitmapDrawable(bitmap);
-//
-//						int size = buffer.length;
-//						Message msg = handler.obtainMessage(ClientActivity.MESSAGE_TEST);
-//						Bundle bundle = new Bundle();
-//						bundle.putString("buffer", new Integer(size).toString() );
-//						msg.setData(bundle);
-//						handler.sendMessage(msg);
-//						
-//						
-//						handler.obtainMessage(
-//								ClientActivity.MESSAGE_IMG, img)
-//								.sendToTarget();
-//					}
-//				} catch (IOException e1) {
-//				}
-//			}
-			
-			
-			
-//			int last;
-//			int current;
-//			
-//			while(true) {
-//				last = 0;
-//				current = 0;
-//				try {
-//					while ( (last < (current = bufferedInputStream.available()) ) && (current != 0) ) {
-//						last = current;						
-//						try {
-//							Thread.sleep(85L);
-//						} catch (InterruptedException e) {
-//							e.printStackTrace();
-//						}
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//				if (current != 0) {
-//					int current = 0;
-//					try {
-//						//Thread.sleep(3000);
-//						current = bufferedInputStream.available();
-//					} catch (Exception e1) {
-//						e1.printStackTrace();
-//					}
-//					byte[] buffer = new byte[2600];
-//					int size = -123;
-//					try {
-//						size = bufferedInputStream.read(buffer, 0, current);
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-					
-					
-					
-//					Message msg = handler.obtainMessage(ClientActivity.MESSAGE_TEST);
-//					Bundle bundle = new Bundle();
-//					bundle.putString("buffer", new Integer(size).toString() );
-//					msg.setData(bundle);
-//					handler.sendMessage(msg);
-					
-//					byte[] b = new byte[123123123];
-//					Resources r = new Resources();
-//					r.getDrawable(R.drawable.ic_launcher);
-					
-				
-//					Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, current);
-//					Drawable img = new BitmapDrawable(bitmap);
-//					handler.obtainMessage(ClientActivity.MESSAGE_IMG, img).sendToTarget();
-					//handler.obtainMessage(ClientActivity.MESSAGE_IMG, bitmap).sendToTarget();
-					
-//				}
-//			}
 		}
 		
 		public void cancel() {

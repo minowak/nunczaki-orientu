@@ -30,6 +30,7 @@ public class ClientActivity extends Activity {
 	public static final int MESSAGE_DEVICE_NAME = 4;
 	public static final int MESSAGE_IMG = 5;
 	public static final int MESSAGE_TEST = 6;
+	public static final int MESSAGE_ERROR = 7;
 	
     /** Called when the activity is first created. */
     @Override
@@ -133,12 +134,23 @@ public class ClientActivity extends Activity {
             		String nn = msg.getData().getString("buffer");
             		Toast.makeText(getApplicationContext(), nn, Toast.LENGTH_LONG).show();
             	break;
+            	
+            	case MESSAGE_ERROR:            		
+            		Toast.makeText(getApplicationContext(), "Blad polaczenia! :(... chlip..", Toast.LENGTH_LONG).show();
+            		bluetoothService.finish();
+            		fin();
+            	break;
             }
         }
     };
     
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+    }
+    
+    public void fin() {
+    	bluetoothService.finish();
+    	this.finish();
     }
     
     @Override
