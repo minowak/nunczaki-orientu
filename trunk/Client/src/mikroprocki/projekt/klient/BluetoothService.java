@@ -110,6 +110,7 @@ public class BluetoothService {
 					e1.printStackTrace();
 				}
 			}
+			
 			//polaczono!
 			connected(socket, device);
 		}
@@ -174,11 +175,11 @@ public class BluetoothService {
 //				}
 //			}
 			
-			int a = 50000;
+			int a = 90000;
 			
 			while (true) { 
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(1231);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
