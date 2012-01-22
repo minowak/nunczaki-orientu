@@ -58,6 +58,21 @@ public class BluetoothService {
 		connectThread.start();
 	}
 
+	
+	
+	public void finish() {
+		if (connectThread != null) {
+			connectThread.cancel();
+			connectThread.stop();
+		} 
+		if (connectedThread != null) {
+			connectedThread.cancel();
+			connectedThread.interrupt();
+			//connectedThread.cont = false;
+		} 
+		
+	}
+	
 	public void connected(BluetoothSocket socket, BluetoothDevice device) {
 		Message msg = handler.obtainMessage(ClientActivity.MESSAGE_DEVICE_NAME);
 		Bundle bundle = new Bundle();
@@ -118,6 +133,7 @@ public class BluetoothService {
 		public void cancel() {
 			try {
 				socket.close();
+				
 			} catch (IOException e) {
 			}
 		}
@@ -128,6 +144,8 @@ public class BluetoothService {
 		private BufferedInputStream bufferedInputStream;
 		private BluetoothSocket bluetoothSocket;
 		private OutputStream outputStream;
+		
+		public boolean cont = true;
 		
 		public ConnectedThread(BluetoothSocket bs) {
 			bluetoothSocket = bs;
@@ -177,7 +195,7 @@ public class BluetoothService {
 			
 			int a = 90000;
 			
-			while (true) { 
+			while (cont) { 
 				try {
 					Thread.sleep(1231);
 				} catch (InterruptedException e1) {
@@ -189,11 +207,11 @@ public class BluetoothService {
 				try {
 				//	while ( (pobrane = bufferedInputStream.read(tmp, 0, a)) > 1) {
 						pobrane = bufferedInputStream.read(tmp, 0, a);
-						Message msg = handler.obtainMessage(ClientActivity.MESSAGE_TEST);
-						Bundle bundle = new Bundle();
-						bundle.putString("buffer", new Integer(pobrane).toString() );
-						msg.setData(bundle);
-						handler.sendMessage(msg);
+					//	Message msg = handler.obtainMessage(ClientActivity.MESSAGE_TEST);
+					//	Bundle bundle = new Bundle();
+					//	bundle.putString("buffer", new Integer(pobrane).toString() );
+					//	msg.setData(bundle);
+				//		handler.sendMessage(msg);
 //						for(int i=0; i<pobrane; i++)
 //							buf.add(tmp[i]);
 //					
@@ -218,7 +236,7 @@ public class BluetoothService {
 				}
 				
 				try {
-					outputStream.write(1);
+				//	outputStream.write(1);
 					outputStream.flush();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -338,6 +356,9 @@ public class BluetoothService {
 		public void cancel() {
 			try {
 				bluetoothSocket.close();
+				inputStream.close();
+				outputStream.close();
+				bufferedInputStream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
